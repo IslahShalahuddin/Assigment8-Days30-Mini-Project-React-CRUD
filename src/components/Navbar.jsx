@@ -66,7 +66,7 @@ function Navbar({cartCount}) {
                 <Link to="/login" className="hover:text-white">
                     Login
                 </Link>
-            )};
+            )}
           </nav>
         </details>
       </div>      
