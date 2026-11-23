@@ -36,14 +36,7 @@ function Navbar({cartCount}) {
             >
               Login
             </Link>
-          )}
-
-          <Link
-              to="/add-product"
-              className="rounded-full bg-[#4f39f6] px-5 py-2 transition hover:bg-indigo-500"
-            >
-            + Add Product
-          </Link>         
+          )}      
         </div>
 
         {/* MOBILE HAMBURGER MENU */}
@@ -74,12 +67,6 @@ function Navbar({cartCount}) {
                     Login
                 </Link>
             )};
-            <Link
-              to="/add-product"
-              className="text-white hover:text-indigo-400"
-            >
-              + Add Product
-            </Link>
           </nav>
         </details>
       </div>      
