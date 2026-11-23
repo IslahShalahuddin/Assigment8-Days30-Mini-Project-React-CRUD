@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
 import { 
     getProducts, 
-    getCategories
+    getCategories,
+    deleteProduct
 } from "../services/productService"
 import ProductList from "../components/ProductList";
 import Loading from "../components/Loading";
 import ErrorMessage from "../components/ErrorMessage";
 import Pagination from "../components/Pagination";
 import CategoryFilter from "../components/CategoryFilter";
+import AddProductForm from "../components/AddProductForm";
+
 
 function Home(){
     const [products, setProducts] = useState([]);
@@ -17,6 +20,8 @@ function Home(){
     const itemPerPage = 8;
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState("all");
+    const [showForm, setShowForm] = useState(false);
+    const [editingProduct, setEditingProduct] = useState(null);
 
     useEffect(() => {
         async function fetchProducts() {
@@ -69,7 +74,21 @@ function Home(){
         indexOfFirstProduct,
         indexOfLastProduct
     );
-        
+
+    async function handleDelete(id) {
+        try {
+            await deleteProduct(id);
+
+            setProducts((prevProducts) =>
+                prevProducts.filter((product) => product.id !== id)
+            );
+
+            console.log("Produk berhasil dihapus");
+        } catch (error) {
+            console.error("Gagal menghapus produk:", error);
+        }
+    }
+    
     return (
         <main className="min-h-screen bg-[#121421] px-5 py-10 text-white md:px-10">
 
@@ -94,7 +113,6 @@ function Home(){
                             Explore Products →
                         </a>
                     </div>
-
                 </section>
 
                 {/* PRODUCT SECTION */}
@@ -119,20 +137,40 @@ function Home(){
                         <p className="text-sm text-gray-400">
                             Showing {filteredProducts.length} products
                         </p>
-
                     </div>
 
                     {/* CATEGORY FILTER */}
-                    <div className="mb-8">
+                    <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-center">
                         <CategoryFilter
                             categories={categories}
                             selectedCategory={selectedCategory}
                             onCategoryChange={handleCategoryChange}
                         />
+
+                        {/* ADD PRODUCT FORM */}
+                        <button
+                            onClick={() => setShowForm(!showForm)}
+                            className="w-fit rounded-full bg-indigo-600 px-5 py-3 font-semibold transition hover:bg-indigo-500"
+                        >
+                            {showForm ? "Cancel" : "+ Add Product"}
+                        </button>
                     </div>
 
+                    {showForm && (
+                            <AddProductForm 
+                                categories={categories}
+                                setProducts={setProducts}  
+                             />
+                        )}
+
                     {/* PRODUCT LIST */}
-                    <ProductList products={currentProduct} />
+                    <ProductList 
+                        products={currentProduct} 
+                        onEdit={setEditingProduct}
+                        editingProduct={editingProduct}
+                        setProducts={setProducts}
+                        onDelete={handleDelete}
+                    />
 
                     {/* PAGINATION */}
                     <div className="mt-10 flex justify-center">

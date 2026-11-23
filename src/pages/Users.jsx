@@ -94,7 +94,7 @@ return (
                             to={`/users/${user.id}`}
                             className="block rounded-lg bg-indigo-600 px-4 py-3 text-center text-sm font-semibold transition hover:bg-indigo-500"
                         >
-                            View Details →
+                            User ID →
                         </Link>
                     </div>
                 ))}

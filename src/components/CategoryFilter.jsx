@@ -10,7 +10,7 @@ function CategoryFilter({
             <button
                 onClick={() => onCategoryChange("all")}
                 className={`rounded-full px-5 py-2 text-sm font-medium trasition ${
-                    selectedCategory === "Semua"
+                    selectedCategory === "all"
                         ? "bg-indigo-600 text-white"
                         : "border border-white/10 bg-[#202337] text-gray-400 hover:text-white"
                 }`}
