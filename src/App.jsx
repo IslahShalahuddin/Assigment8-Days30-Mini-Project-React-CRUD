@@ -21,9 +21,7 @@ function App() {
         <Route 
           path="/products/:id"
           element={
-            <ProtectedRoute>
               <ProductDetail/>
-            </ProtectedRoute>
           }  
         />
 

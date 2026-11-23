@@ -10,7 +10,8 @@ import ErrorMessage from "../components/ErrorMessage";
 import Pagination from "../components/Pagination";
 import CategoryFilter from "../components/CategoryFilter";
 import AddProductForm from "../components/AddProductForm";
-
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 function Home(){
     const [products, setProducts] = useState([]);
@@ -22,6 +23,26 @@ function Home(){
     const [selectedCategory, setSelectedCategory] = useState("all");
     const [showForm, setShowForm] = useState(false);
     const [editingProduct, setEditingProduct] = useState(null);
+    const { token } = useAuth();
+    const navigate = useNavigate();
+
+    function handleEdit(product) {
+        if (!token) {
+            navigate("/login");
+            return;
+        }
+
+        setEditingProduct(product);
+    }
+
+    function handleAddProduct() {
+    if (!token) {
+        navigate("/login");
+        return;
+    }
+
+    setShowForm(!showForm);
+}
 
     useEffect(() => {
         async function fetchProducts() {
@@ -76,6 +97,10 @@ function Home(){
     );
 
     async function handleDelete(id) {
+        if (!token) {
+            navigate("/login");
+            return;
+        }
         try {
             await deleteProduct(id);
 
@@ -149,7 +174,7 @@ function Home(){
 
                         {/* ADD PRODUCT FORM */}
                         <button
-                            onClick={() => setShowForm(!showForm)}
+                            onClick={handleAddProduct}
                             className="w-fit rounded-full bg-indigo-600 px-5 py-3 font-semibold transition hover:bg-indigo-500"
                         >
                             {showForm ? "Cancel" : "+ Add Product"}
@@ -166,7 +191,7 @@ function Home(){
                     {/* PRODUCT LIST */}
                     <ProductList 
                         products={currentProduct} 
-                        onEdit={setEditingProduct}
+                        onEdit={handleEdit}
                         editingProduct={editingProduct}
                         setProducts={setProducts}
                         onDelete={handleDelete}

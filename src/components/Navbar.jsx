@@ -18,7 +18,7 @@ function Navbar({cartCount}) {
           <Link to="/" className="transition hover:text-white">
             Home
           </Link>
-          <Link to="/Users" className="transition hover:text-white">
+          <Link to="/users" className="transition hover:text-white">
             Users
           </Link>
           
